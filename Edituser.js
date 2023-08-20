@@ -1,5 +1,6 @@
 var myform=document.getElementById('form')
 myform.addEventListener('submit',onsubmit)
+var cl=document.getElementById('button2')
 function onsubmit(e){
   e.preventDefault();
    let obj={
@@ -7,9 +8,23 @@ function onsubmit(e){
      email:document.getElementById('emailInput').value,
      phoneNumber:document.getElementById('phoneInput').value
    }
-   let user=JSON.stringify(obj)
-   localStorage.setItem(obj.phoneNumber,user)
-   displayUserDetails(obj)
+  axios.post('https://crudcrud.com/api/7f418295da724d9585c14efe06ed68d6/appointmentdata',obj)
+  .then(response=>{
+    displayUserDetails(response.data);
+  })
+  .catch(err=>console.log(err));
+}
+cl.addEventListener('click',getdata);
+function getdata(e){
+  e.preventDefault();
+  axios.get('https://crudcrud.com/api/7f418295da724d9585c14efe06ed68d6/appointmentdata')
+  .then(dt=>{
+    let len=dt.data.length
+    for(let i=0;i<len;i++){
+      displayUserDetails(dt.data[i]);
+     }
+  })
+  .catch(err=>console.log(err));
 }
 function displayUserDetails(obj){
   var parent=document.getElementById('ulid')
